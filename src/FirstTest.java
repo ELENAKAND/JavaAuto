@@ -3,6 +3,7 @@ import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.URL;
@@ -22,15 +23,17 @@ public class FirstTest {
         capabilities.setCapability("app","/Users/elenakandaurova/Desktop/JavaAppAuto/JavaAuto/apks/org.wikipedia.apk");
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+        WebElement element = driver.findElementById("org.wikipedia:id/fragment_onboarding_skip_button");
+        element.click();
     }
-
     @After
     public void tearDown(){
         driver.quit();
     }
-
     @Test
     public void firstTest(){
-        System.out.println("First test run");
+        WebElement element2 = driver.findElementByXPath("//*[contains(@text,'Search Wikipedia')]");
+        element2.click();
     }
+    
 }
