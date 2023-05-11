@@ -35,7 +35,7 @@ public class FirstTest {
         driver.quit();
     }
 
-    @Test
+   @Test
     public void firstTest() {
         waitForElementByXpathAndClick(
                 "//*[contains(@text,'Search Wikipedia')]",
@@ -54,6 +54,26 @@ public class FirstTest {
                 "Cannot find string Object-oriented...",
                 15
         );
+    }
+
+    @Test
+    public void testCancelSearch(){
+        waitForElementByIdAndClick(
+                "org.wikipedia:id/search_container",
+                "Cannot find Search container",
+                5
+        );
+        /*waitForElementByIdAndClick(
+                "Navigate up",
+                "Cannot click arrow-sign",
+                5
+        );*/
+        waitForElementNotPresent(
+                "Navigate up",
+                "Arrow-sign still here",
+                5
+        );
+
     }
 
 
@@ -78,5 +98,26 @@ public class FirstTest {
         WebElement element = waitForElementPresentByXpath(xpath, error_message, timeoutInSeconds);
         element.sendKeys(value);
         return element;
+    }
+    private WebElement waitForElementPresentById(String id, String error_message, long timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(error_message + "\n");
+        By by = By.id(id);
+        return wait.until(
+                ExpectedConditions.presenceOfElementLocated(by)
+        );
+    }
+    private WebElement waitForElementByIdAndClick(String id, String error_message, long timeoutInSeconds){
+        WebElement element =  waitForElementPresentById(id, error_message, timeoutInSeconds);
+        element.click();
+        return element;
+    }
+    private boolean waitForElementNotPresent(String id, String error_message, long timeoutInSeconds){
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(error_message +"/n");
+        By by = By.id(id);
+        return wait.until(
+                ExpectedConditions.invisibilityOfElementLocated(by)
+        );
     }
 }
