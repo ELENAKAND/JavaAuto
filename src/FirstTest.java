@@ -107,6 +107,35 @@ public class FirstTest {
         );
 
     }
+    @Test
+    public void testClearSearchAndReturn(){
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find Search container",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Java",
+                "Cannot send input",
+                5
+        );
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Cannot find search field",
+                10
+        );
+        waitForElementAndClick(
+                By.id("Navigate up"),
+                "Cannot find Arrow button",
+                5
+                );
+        waitForElementNotPresent(
+                By.id("Navigate up"),
+                "Arrow button still here",
+                5
+        );
+    }
 
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
@@ -136,6 +165,11 @@ public class FirstTest {
         return wait.until(
                 ExpectedConditions.invisibilityOfElementLocated(by)
         );
+    }
+    private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds){
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        element.clear();
+        return element;
     }
 }
 
