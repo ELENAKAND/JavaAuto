@@ -108,7 +108,7 @@ public class FirstTest {
 
     }
     @Test
-    public void testClearSearchAndReturn(){
+    public void testClearSearchAndReturn() {
         waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
                 "Cannot find Search container",
@@ -129,13 +129,27 @@ public class FirstTest {
                 By.id("Navigate up"),
                 "Cannot find Arrow button",
                 5
-                );
+        );
         waitForElementNotPresent(
                 By.id("Navigate up"),
                 "Arrow button still here",
                 5
         );
     }
+        @Test
+        public void testElementHasText(){
+            waitForElementAndClick(
+                    By.id("org.wikipedia:id/search_container"),
+                    "Cannot find Search container",
+                    5
+            );
+            assertElementHasText(
+                    By.id("org.wikipedia:id/search_src_text"),
+                    "Cannot find search field",
+                    "Search Wikipedia"
+            );
+    }
+
 
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
@@ -171,5 +185,10 @@ public class FirstTest {
         element.clear();
         return element;
     }
+    private WebElement assertElementHasText(By by, String error_message, String text){
+        WebElement text_element = waitForElementPresent(by, error_message, 5);
+        String field_has_text = text_element.getAttribute("text");
+        Assert.assertEquals(error_message, text, field_has_text);
+        return text_element;
+    }
 }
-
