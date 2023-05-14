@@ -1,6 +1,7 @@
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -19,7 +20,7 @@ public class FirstTest {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("deviceName", "AndroidTestDevice");
-        capabilities.setCapability("platformVersion", "8.0");
+        capabilities.setCapability("platformVersion", "9");
         capabilities.setCapability("automationName", "Appium");
         capabilities.setCapability("appPackage", "org.wikipedia");
         capabilities.setCapability("appActivity", ".main.MainActivity");
@@ -75,6 +76,37 @@ public class FirstTest {
         );
 
     }
+    @Test
+    public void testCompareArticleTitle(){
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find search input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.xpath("//*[@class='android.view.ViewGroup']//*[contains(@text,'Search Wikipedia')]"),
+                "Java",
+                "Cannot send input",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='Object-oriented programming language']"), //container id+subtitle text
+                "Cannot find Java search result",
+                20
+        );
+        WebElement title_element  = waitForElementPresent(
+                By.xpath("//*[@text='Java (programming language)']"), //Article's title-id
+                "Cannot find article title",
+                15
+        );
+        String article_title = title_element.getAttribute("text");
+        Assert.assertEquals(
+                "We see unexpected title",
+                "Java (programming language)",
+                article_title
+        );
+
+    }
 
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
@@ -106,3 +138,4 @@ public class FirstTest {
         );
     }
 }
+
