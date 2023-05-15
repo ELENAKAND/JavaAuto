@@ -149,6 +149,35 @@ public class FirstTest {
                     "Search Wikipedia"
             );
     }
+        @Test
+        public void testGetSearchResultsAndCancel(){
+            waitForElementAndClick(
+                    By.id("org.wikipedia:id/search_container"),
+                    "Cannot find Search container",
+                    5
+            );
+            waitForElementAndSendKeys(
+                    By.id("org.wikipedia:id/search_src_text"),
+                    "Java",
+                    "Cannot send input",
+                    5
+            );
+            waitForElementPresent(
+                    By.id("org.wikipedia:id/page_list_item_description"),
+                    "Cannot find className elements"
+            );
+            waitForElementAndClick(
+                    By.id("org.wikipedia:id/search_close_btn"),
+                    "Cannot click x button",
+                    5
+            );
+            waitForElementNotPresent(
+                    By.id("org.wikipedia:id/page_list_item_description"),
+                    "Search results still here",
+                    5
+            );
+
+    }
 
 
 
