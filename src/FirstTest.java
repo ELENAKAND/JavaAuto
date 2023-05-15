@@ -36,7 +36,7 @@ public class FirstTest {
         driver.quit();
     }
 
-   @Test
+    @Test
     public void firstTest() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
@@ -58,7 +58,7 @@ public class FirstTest {
     }
 
     @Test
-    public void testCancelSearch(){
+    public void testCancelSearch() {
         waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
                 "Cannot find Search container",
@@ -76,8 +76,9 @@ public class FirstTest {
         );
 
     }
+
     @Test
-    public void testCompareArticleTitle(){
+    public void testCompareArticleTitle() {
         waitForElementAndClick(
                 By.xpath("//*[contains(@text,'Search Wikipedia')]"),
                 "Cannot find search input",
@@ -94,7 +95,7 @@ public class FirstTest {
                 "Cannot find Java search result",
                 20
         );
-        WebElement title_element  = waitForElementPresent(
+        WebElement title_element = waitForElementPresent(
                 By.xpath("//*[@text='Java (programming language)']"), //Article's title-id
                 "Cannot find article title",
                 15
@@ -107,6 +108,7 @@ public class FirstTest {
         );
 
     }
+
     @Test
     public void testClearSearchAndReturn() {
         waitForElementAndClick(
@@ -136,49 +138,80 @@ public class FirstTest {
                 5
         );
     }
-        @Test
-        public void testElementHasText(){
-            waitForElementAndClick(
-                    By.id("org.wikipedia:id/search_container"),
-                    "Cannot find Search container",
-                    5
-            );
-            assertElementHasText(
-                    By.id("org.wikipedia:id/search_src_text"),
-                    "Cannot find search field",
-                    "Search Wikipedia"
-            );
-    }
-        @Test
-        public void testGetSearchResultsAndCancel(){
-            waitForElementAndClick(
-                    By.id("org.wikipedia:id/search_container"),
-                    "Cannot find Search container",
-                    5
-            );
-            waitForElementAndSendKeys(
-                    By.id("org.wikipedia:id/search_src_text"),
-                    "Java",
-                    "Cannot send input",
-                    5
-            );
-            waitForElementPresent(
-                    By.id("org.wikipedia:id/page_list_item_description"),
-                    "Cannot find className elements"
-            );
-            waitForElementAndClick(
-                    By.id("org.wikipedia:id/search_close_btn"),
-                    "Cannot click x button",
-                    5
-            );
-            waitForElementNotPresent(
-                    By.id("org.wikipedia:id/page_list_item_description"),
-                    "Search results still here",
-                    5
-            );
 
+    @Test
+    public void testElementHasText() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find Search container",
+                5
+        );
+        assertElementHasText(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Cannot find search field",
+                "Search Wikipedia"
+        );
     }
 
+    @Test
+    public void testGetSearchResultsAndCancel() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find Search container",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Java",
+                "Cannot send input",
+                5
+        );
+        waitForElementPresent(
+                By.id("org.wikipedia:id/page_list_item_description"),
+                "Cannot find className elements"
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot click x button",
+                5
+        );
+        waitForElementNotPresent(
+                By.id("org.wikipedia:id/page_list_item_description"),
+                "Search results still here",
+                5
+        );
+    }
+
+    @Test
+    public void testSearchByWord() {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find Search container",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Java",
+                "Cannot send input",
+                5
+        );
+        assertListTitlesHaveText(
+                By.xpath("//*[@text='Java']"),
+                "Cannot find text Java",
+                "Java"
+        );
+        assertListTitlesHaveText(
+                By.xpath("//*[@text='JavaScript']"),
+                "Cannot find text Java",
+                "Java"
+        );
+        assertListTitlesHaveText(
+                By.xpath("//*[@text='Java (programming language)']"),
+                "Cannot find text Java",
+                "Java"
+        );
+
+    }
 
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
@@ -188,36 +221,51 @@ public class FirstTest {
                 ExpectedConditions.presenceOfElementLocated(by)
         );
     }
+
     private WebElement waitForElementPresent(By by, String error_message) {
         return waitForElementPresent(by, error_message, 5);
     }
 
-    private WebElement waitForElementAndClick(By by, String error_message, long timeoutInSeconds){
-        WebElement element =  waitForElementPresent(by, error_message, timeoutInSeconds);
+    private WebElement waitForElementAndClick(By by, String error_message, long timeoutInSeconds) {
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.click();
         return element;
     }
-    private WebElement waitForElementAndSendKeys(By by, String value, String error_message, long timeoutInSeconds){
+
+    private WebElement waitForElementAndSendKeys(By by, String value, String error_message, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.sendKeys(value);
         return element;
     }
-    private boolean waitForElementNotPresent(By by, String error_message, long timeoutInSeconds){
+
+    private boolean waitForElementNotPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(error_message +"\n");
+        wait.withMessage(error_message + "\n");
         return wait.until(
                 ExpectedConditions.invisibilityOfElementLocated(by)
         );
     }
-    private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds){
+
+    private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         element.clear();
         return element;
     }
-    private WebElement assertElementHasText(By by, String error_message, String text){
+
+    private WebElement assertElementHasText(By by, String error_message, String text) {
         WebElement text_element = waitForElementPresent(by, error_message, 5);
         String field_has_text = text_element.getAttribute("text");
         Assert.assertEquals(error_message, text, field_has_text);
         return text_element;
     }
-}
+
+    private WebElement assertListTitlesHaveText(By by, String error_message, String text) {
+        WebElement text_element = waitForElementPresent(by, error_message, 5);
+        String field_has_text = text_element.getAttribute("text");
+        Assert.assertTrue(error_message,field_has_text.contains(text));
+        return text_element;
+
+    }
+
+}//Assert.assertTrue(“Hello, world”.contains(“Hello”))
+//Assert.assertTrue(field_has_text.contains("Java"));
