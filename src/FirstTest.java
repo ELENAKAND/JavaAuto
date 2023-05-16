@@ -1,10 +1,12 @@
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -213,6 +215,32 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void testSwipeArticleTitle() {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find search input",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.xpath("//*[@class='android.view.ViewGroup']//*[contains(@text,'Search Wikipedia')]"),
+                "Java",
+                "Cannot send input",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='Object-oriented programming language']"), //container id+subtitle text
+                "Cannot find Java search result",
+                20
+        );
+        waitForElementPresent(
+                By.xpath("//*[@text='Java (programming language)']"), //Article's title-id
+                "Cannot find article title",
+                15
+        );
+        swipeUp(2000);
+    }
+
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -262,10 +290,20 @@ public class FirstTest {
     private WebElement assertListTitlesHaveText(By by, String error_message, String text) {
         WebElement text_element = waitForElementPresent(by, error_message, 5);
         String field_has_text = text_element.getAttribute("text");
-        Assert.assertTrue(error_message,field_has_text.contains(text));
+        Assert.assertTrue(error_message, field_has_text.contains(text));
         return text_element;
-
+    }
+    protected void swipeUp(int timeOfSwipe){
+        TouchAction action = new TouchAction(driver);
+        Dimension size = driver.manage().window().getSize();
+        int x = size.width/2;
+        int start_y = (int)(size.height*0.8);
+        int end_y = (int)(size.height*0.2);
+        action.press(x, start_y).waitAction(timeOfSwipe).moveTo(x, end_y).release().perform();
+    }
+    protected void swipeUpQuick(){
+        swipeUp(200);
     }
 
-}//Assert.assertTrue(“Hello, world”.contains(“Hello”))
-//Assert.assertTrue(field_has_text.contains("Java"));
+}
+
