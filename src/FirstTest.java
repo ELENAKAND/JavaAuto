@@ -224,21 +224,25 @@ public class FirstTest {
         );
         waitForElementAndSendKeys(
                 By.xpath("//*[@class='android.view.ViewGroup']//*[contains(@text,'Search Wikipedia')]"),
-                "Java",
+                "Appium",
                 "Cannot send input",
                 5
         );
         waitForElementAndClick(
-                By.xpath("//*[@text='Object-oriented programming language']"), //container id+subtitle text
-                "Cannot find Java search result",
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Appium']"), //res-id+ title text in one
+                "Cannot find Appium search result",
                 20
         );
         waitForElementPresent(
-                By.xpath("//*[@text='Java (programming language)']"), //Article's title-id
+                By.xpath("//*[@text='Appium']"), //Article's title-id
                 "Cannot find article title",
                 15
         );
-        swipeUp(2000);
+        swipeUpToFindElement(
+                By.xpath("//*[@text='View article in browser']"),
+                "Cannot find footer element",
+                20
+        );
     }
 
 
@@ -304,6 +308,16 @@ public class FirstTest {
     protected void swipeUpQuick(){
         swipeUp(200);
     }
-
+    protected void swipeUpToFindElement(By by, String error_message, int max_swipes){
+        int already_swiped = 0;
+        while (driver.findElements(by).size()==0){
+            if(already_swiped > max_swipes){
+                waitForElementPresent(by, "Cannot find element by swiping up.\n"+error_message, 0);
+                return;
+            }
+            swipeUpQuick();
+            ++already_swiped;
+        }
+    }
 }
 
