@@ -322,7 +322,6 @@ public class FirstTest {
                 "Cannot find list name in the SAVED-folder",
                 5
         );
-
         //includes waitForElementPresent (to make sure the article on the list)
         swipeElementToLeft(
                 By.xpath("//*[@text='Object-oriented programming language']"),
@@ -461,6 +460,146 @@ public class FirstTest {
                 By.xpath("//*[@text='Object-oriented programming language']"), //container id+subtitle text
                 "Cannot find article after returning from background",
                 2
+        );
+    }
+    @Test
+    public void saveTwoArticlesAndDeleteOne(){
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find search input",
+                5
+        );
+        String search_value = "Java";
+        waitForElementAndSendKeys(
+                By.xpath("//*[@class='android.view.ViewGroup']//*[contains(@text,'Search Wikipedia')]"),
+                search_value,
+                "Cannot send input value "+search_value,
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='Object-oriented programming language']"), //container id+subtitle text
+                "Cannot find Java search result",
+                20
+        );
+        waitForElementPresent(
+                By.xpath("//*[@text='Java (programming language)']"), //to be sure article is opened
+                "Cannot find article title",
+                15
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='WORA']"),
+                "Cannot find SAVE button",
+                5
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/snackbar_action"),
+                "Cannot find ADD TO LIST button",
+                5
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/text_input"),
+                "Cannot find NAME OF LIST input field",
+                5
+        );
+        String folder_name = "Test list";
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/text_input"),
+                folder_name,
+                "Cannot send input to the name of list",
+                5
+        );
+        waitForElementAndClick(
+                By.id("android:id/button1"),
+                "Cannot find OK button",
+                5
+        );
+        waitForElementAndClick(
+                By.id("Navigate up"),
+                "Cannot find arrow-button to go back after saving list",
+                5
+        );
+        waitForElementAndClick(
+                By.id("Navigate up"),
+                "Cannot find 2nd arrow-button to go back again",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find search input",
+                5
+        );
+        String search_second_value = "Appium";
+        waitForElementAndSendKeys(
+                By.xpath("//*[@class='android.view.ViewGroup']//*[contains(@text,'Search Wikipedia')]"),
+                search_second_value,
+                "Cannot send input for "+search_second_value,
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Appium']"), //res-id+ title text in one
+                "Cannot find Appium search result",
+                20
+        );
+        waitForElementPresent(
+                By.xpath("//*[@text='Appium']"), //Article's title-id
+                "Cannot find article title",
+                15
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='Node.js']"),
+                "Cannot find SAVE button",
+                5
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/snackbar_action"),
+                "Cannot find ADD TO LIST button",
+                5
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/item_title_container"),
+                "Cannot find Test list folder",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='VIEW LIST']"),
+                "Cannot find Test list folder",
+                5
+        );
+        swipeElementToLeft(
+                By.xpath("//*[@text='Object-oriented programming language']"),
+                "Cannot find saved article"
+        );
+        waitForElementNotPresent(
+                By.xpath("//*[@text='Java (programming language)']"),
+                "Saved article still on the list",
+                5
+        );
+        waitForElementPresent(
+                By.xpath("//*[@text='Appium']"), //Article's title-id
+                "Cannot find article title",
+                15
+        );
+        String element_attribute_list = waitForElementAndGetAttribute(
+                By.xpath("//*[@text='Appium']"),
+                "text",
+                "Cannot get attribute",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='Appium']"),
+                "Cannot find Appium on the saved list",
+                5
+        );
+        String element_attribute_article = waitForElementAndGetAttribute(
+                By.xpath("//*[@text='Appium']"),
+                "text",
+                "Cannot get attribute",
+                5
+        );
+        Assert.assertEquals(
+                "Article's attribute are different",
+                element_attribute_list,
+                element_attribute_article
         );
     }
 
