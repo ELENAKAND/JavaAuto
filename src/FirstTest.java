@@ -602,6 +602,32 @@ public class FirstTest {
                 element_attribute_article
         );
     }
+    @Test
+    public void articleHasTitle(){
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Cannot find search input",
+                5
+        );
+        String search_value = "Java";
+        waitForElementAndSendKeys(
+                By.xpath("//*[@class='android.view.ViewGroup']//*[contains(@text,'Search Wikipedia')]"),
+                search_value,
+                "Cannot send input value "+search_value,
+                5
+        );
+       waitForElementAndClick(
+               By.xpath("//*[@text='Object-oriented programming language']"),
+               "Cannot find the article "+search_value+" on the search list",
+               5
+       );
+       assertElementPresent(
+               By.xpath("//*[@text='Java (programming language)']"),
+               "Cannot find article title",
+               "text",
+               "Java (programming language)"
+       );
+    }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -713,6 +739,12 @@ public class FirstTest {
     private String waitForElementAndGetAttribute(By by, String attribute, String error_message, long timeoutInSeconds){
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         return element.getAttribute(attribute);
+    }
+    private WebElement assertElementPresent(By by, String error_message, String attribute, String expected_text) {
+        WebElement element = waitForElementPresent(by, error_message, 5);
+        String actual_text = element.getAttribute(attribute); //attribute should be found
+        Assert.assertEquals(error_message, expected_text, actual_text);
+        return element;
     }
 }
 
