@@ -1,6 +1,5 @@
 package lib.ui;
 import io.appium.java_client.AppiumDriver;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 
 
