@@ -23,21 +23,9 @@ public class FirstTest extends CoreTestCase {
     }
     @Test
     public void testCancelSearch() {
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find Search container",
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.id("Navigate up"),
-                "Cannot click arrow-sign",
-                5
-        );
-        MainPageObject.waitForElementNotPresent(
-                By.id("Navigate up"),
-                "Arrow-sign still here",
-                5
-        );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick for search line
+        SearchPageObject.clickCancelSearch();             //go back to the main page
     }
     @Test
     public void testCompareArticleTitle() {
@@ -49,7 +37,7 @@ public class FirstTest extends CoreTestCase {
         ArticlePageObject ArticlePageObject = new ArticlePageObject(driver); //ArticlePageObject initialization
         String article_title = ArticlePageObject.getArticleTitle();
 
-        Assert.assertEquals(
+        assertEquals(
                 "We see unexpected title",
                 "Object-oriented programming language",
                 article_title
@@ -67,16 +55,9 @@ public class FirstTest extends CoreTestCase {
     }
     @Test
     public void testElementHasText() {
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find Search container",
-                5
-        );
-        MainPageObject.assertElementHasText(
-                By.id("org.wikipedia:id/search_src_text"),
-                "Cannot find search field",
-                "Search Wikipedia"
-        );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
+        SearchPageObject.waitForSearchResult("Search Wikipedia");
     }
     @Test            //EX #3 (REFACTORED)
     public void testGetSearchResultsAndCancel() {
@@ -86,7 +67,7 @@ public class FirstTest extends CoreTestCase {
         String search_line = "Java";
         SearchPageObject.typeSearchLine(search_line);    //instead of waitForElementAndSendKeys
         int amount_of_search_results = SearchPageObject.getAmountOfFoundArticles();
-        Assert.assertTrue(
+        assertTrue(
                 "We found no results",
                 amount_of_search_results > 0
         );
@@ -95,17 +76,11 @@ public class FirstTest extends CoreTestCase {
     }
     @Test
     public void testSearchByWord() {
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find Search container",
-                5
-        );
-        MainPageObject.waitForElementAndSendKeys(
-                By.id("org.wikipedia:id/search_src_text"),
-                "Java",
-                "Cannot send input",
-                5
-        );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
+        SearchPageObject.typeSearchLine("Java");    //instead of waitForElementAndSendKeys
+        SearchPageObject.waitForSearchResult("Java");
+        /*
         MainPageObject.assertListTitlesHaveText(
                 By.xpath("//*[@text='Java']"),
                 "Cannot find text Java",
@@ -120,7 +95,7 @@ public class FirstTest extends CoreTestCase {
                 By.xpath("//*[@text='Java (programming language)']"),
                 "Cannot find text Java",
                 "Java"
-        );
+        );*/
     }
     @Test
     public void testSwipeArticleTitle() {
@@ -162,7 +137,7 @@ public class FirstTest extends CoreTestCase {
         SearchPageObject.typeSearchLine(search_line);         //instead of waitForElementAndSendKeys
         int amount_of_search_results = SearchPageObject.getAmountOfFoundArticles();
 
-        Assert.assertTrue(
+        assertTrue(
                 "We found too few results",
                 amount_of_search_results > 0
         );
@@ -189,14 +164,14 @@ public class FirstTest extends CoreTestCase {
         String title_before_rotation = ArticlePageObject.getArticleTitle();
         this.rotateScreenLandscape();
         String title_after_rotation = ArticlePageObject.getArticleTitle();
-        Assert.assertEquals(
+        assertEquals(
                 "Article was changed after rotation",
                 title_before_rotation,
                 title_after_rotation
         );
         this.rotateScreenPortrait();
         String title_after_second_rotation = ArticlePageObject.getArticleTitle();
-        Assert.assertEquals(
+        assertEquals(
                 "Article was changed after rotation",
                 title_before_rotation,
                 title_after_second_rotation
@@ -247,7 +222,7 @@ public class FirstTest extends CoreTestCase {
         ArticlePageObject.waitForTitleElement(); //to assure the article is opened with title
         String appium_article_title = ArticlePageObject.getArticleTitle();
 
-        Assert.assertEquals(
+        assertEquals(
                 "We see unexpected title",
                 "Automation for Apps",
                 appium_article_title

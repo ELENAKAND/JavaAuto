@@ -66,7 +66,7 @@ public class MainPageObject {         //created for tests methods
         WebElement text_element = waitForElementPresent(by, error_message, 5);
         String field_has_text = text_element.getAttribute("text");
         Assert.assertTrue(error_message, field_has_text.contains(text));
-        return text_element;
+        return text_element; 
     }
     public void swipeUp(int timeOfSwipe){
         TouchAction action = new TouchAction(driver);
