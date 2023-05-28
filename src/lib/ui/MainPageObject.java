@@ -128,19 +128,13 @@ public class MainPageObject {         //created for tests methods
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         return element.getAttribute(attribute);
     }
-    public WebElement assertElementPPresent(By by, String error_message, String attribute, String expected_text) {
-        WebElement element = waitForElementPresent(by, error_message, 5);
-        String actual_text = element.getAttribute(attribute); //attribute should be found
-        Assert.assertEquals(error_message, expected_text, actual_text);
-        return element;
-    }
-    public String findArticle(By by){
+    public String findArticleWithoutWait(By by){
         String article_present = null;
         article_present = driver.findElement(by).toString();
         return article_present;
     }
-    public void assertElementPresent(By by, String error_message){
-        String title_present = findArticle(by);
+    public void assertElementPresentWithoutWait(By by, String error_message){
+        String title_present = findArticleWithoutWait(by);
         Assert.assertTrue("Cannot find article title", title_present!=null);
     }
 }

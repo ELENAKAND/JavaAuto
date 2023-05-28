@@ -9,6 +9,7 @@ public class ArticlePageObject extends MainPageObject{
     TITLE = "pcs-edit-section-title-description",
     FOOTER_ELEMENT = "//*[@text='View article in browser']",
     SAVE_BUTTON = "//*[@text='WORA']",
+    SAVE_BUTTON_SECOND_SAVING = "//*[@text='Node.js']",
     ADD_TO_LIST = "org.wikipedia:id/snackbar_action",
     MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
     MY_LIST_OK_BUTTON = "android:id/button1",
@@ -33,6 +34,7 @@ public class ArticlePageObject extends MainPageObject{
                 20
         );
     }
+
     public void addArticleToMyList(String folder_name){
         this.waitForElementAndClick(
                 By.xpath(SAVE_BUTTON),
@@ -61,11 +63,27 @@ public class ArticlePageObject extends MainPageObject{
                 5
         );
     }
+    public void addAnotherArticleToMyList(){
+        this.waitForElementAndClick(
+                By.xpath(SAVE_BUTTON_SECOND_SAVING),
+                "Cannot find second-save button ",
+                5
+        );
+        this.waitForElementAndClick(
+                By.id(ADD_TO_LIST),
+                "Cannot find ADD TO LIST button",
+                5
+        );
+    }
     public void closeArticle(){            //click arrow-button to go back
         this.waitForElementAndClick(
                 By.id(GO_BACK_ARROW_BUTTON),
                 "Cannot find arrow-button to go back after saving list",
                 5
         );
+    }
+    public void assertArticleHasTitleWithoutWait(){
+        this.findArticleWithoutWait(By.xpath(TITLE));
+        this.assertElementPresentWithoutWait(By.xpath(TITLE), "Cannot find any title");
     }
 }

@@ -78,26 +78,20 @@ public class FirstTest extends CoreTestCase {
                 "Search Wikipedia"
         );
     }
-    @Test
+    @Test            //EX #3 (REFACTORED)
     public void testGetSearchResultsAndCancel() {
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
 
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
-        SearchPageObject.typeSearchLine("Java");    //instead of waitForElementAndSendKeys
-        MainPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/page_list_item_description"),
-                "Cannot find className elements"
+        String search_line = "Java";
+        SearchPageObject.typeSearchLine(search_line);    //instead of waitForElementAndSendKeys
+        int amount_of_search_results = SearchPageObject.getAmountOfFoundArticles();
+        Assert.assertTrue(
+                "We found no results",
+                amount_of_search_results > 0
         );
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "Cannot click x button",
-                5
-        );
-        MainPageObject.waitForElementNotPresent(
-                By.id("org.wikipedia:id/page_list_item_description"),
-                "Search results still here",
-                5
-        );
+        SearchPageObject.clickCrossCancelButton();
+        SearchPageObject.waitForSearchListIsEmpty();
     }
     @Test
     public void testSearchByWord() {
@@ -158,7 +152,6 @@ public class FirstTest extends CoreTestCase {
         MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
         MyListsPageObject.openSavedFolderByName(name_of_folder);
         MyListsPageObject.swipeArticleToDelete(article_title); //contains waiting of appear/disappear article_title
-
     }
     @Test
     public void testAmountOfNotEmptySearch() {
@@ -220,195 +213,57 @@ public class FirstTest extends CoreTestCase {
         this.backgroundApp(2);
         SearchPageObject.waitForSearchResult("Object-oriented programming language");
     }
-    @Test
+    @Test        //EX #5 (REFACTORED)
     public void testSaveTwoArticlesAndDeleteOne() {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find search input",
-                5
-        );
-        String search_value = "Java";
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[@class='android.view.ViewGroup']//*[contains(@text,'Search Wikipedia')]"),
-                search_value,
-                "Cannot send input value " + search_value,
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Object-oriented programming language']"), //container id+subtitle text
-                "Cannot find Java search result",
-                20
-        );
-        MainPageObject.waitForElementPresent(
-                By.xpath("//*[@text='Java (programming language)']"), //to be sure article is opened
-                "Cannot find article title",
-                15
-        );
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='WORA']"),
-                "Cannot find SAVE button",
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/snackbar_action"),
-                "Cannot find ADD TO LIST button",
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/text_input"),
-                "Cannot find NAME OF LIST input field",
-                5
-        );
-        String folder_name = "Test list";
-        MainPageObject.waitForElementAndSendKeys(
-                By.id("org.wikipedia:id/text_input"),
-                folder_name,
-                "Cannot send input to the name of list",
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.id("android:id/button1"),
-                "Cannot find OK button",
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.id("Navigate up"),
-                "Cannot find arrow-button to go back after saving list",
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.id("Navigate up"),
-                "Cannot find 2nd arrow-button to go back again",
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find search input",
-                5
-        );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
+        String search_line = "Java";
+        SearchPageObject.typeSearchLine(search_line);    //instead of waitForElementAndSendKeys
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");// on the search list
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject.waitForTitleElement(); //to assure the article is opened
+        String article_title = ArticlePageObject.getArticleTitle(); //?
+        String name_of_folder = "Test list";
+        ArticlePageObject.addArticleToMyList(name_of_folder);//goes until OK button
+        SearchPageObject.clickCancelSearchTwice(); //go back to main page
+        SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
         String search_second_value = "Appium";
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[@class='android.view.ViewGroup']//*[contains(@text,'Search Wikipedia')]"),
-                search_second_value,
-                "Cannot send input for " + search_second_value,
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Appium']"), //res-id+ title text in one
-                "Cannot find Appium search result",
-                20
-        );
-        MainPageObject.waitForElementPresent(
-                By.xpath("//*[@text='Appium']"), //Article's title-id
-                "Cannot find article title",
-                15
-        );
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Node.js']"),
-                "Cannot find SAVE button",
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/snackbar_action"),
-                "Cannot find ADD TO LIST button",
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/item_title_container"),
-                "Cannot find Test list folder",
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='VIEW LIST']"),
-                "Cannot find Test list folder",
-                5
-        );
-        MainPageObject.swipeElementToLeft(
-                By.xpath("//*[@text='Object-oriented programming language']"),
-                "Cannot find saved article"
-        );
-        MainPageObject.waitForElementNotPresent(
-                By.xpath("//*[@text='Java (programming language)']"),
-                "Saved article still on the list",
-                5
-        );
-        MainPageObject.waitForElementPresent(
-                By.xpath("//*[@text='Appium']"), //Article's title-id
-                "Cannot find article title",
-                15
-        );
-        String element_attribute_list = MainPageObject.waitForElementAndGetAttribute(
-                By.xpath("//*[@text='Appium']"),
-                "text",
-                "Cannot get attribute",
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Appium']"),
-                "Cannot find Appium on the saved list",
-                5
-        );
-        String element_attribute_article = MainPageObject.waitForElementAndGetAttribute(
-                By.xpath("//*[@text='Appium']"),
-                "text",
-                "Cannot get attribute",
-                5
-        );
+        SearchPageObject.typeSearchLine(search_second_value);    //instead of waitForElementAndSendKeys
+        SearchPageObject.clickByArticleWithSubstring("Automation for Apps");// on the search list
+        ArticlePageObject.waitForTitleElement(); //to assure the article is opened
+        ArticlePageObject.addAnotherArticleToMyList(); //goes until ADD TO LIST
+        MyListsPageObject MylistsPageObject = new MyListsPageObject(driver);
+        String saved_folder_name = "Test list";
+        MylistsPageObject.openSavedFolderByName(saved_folder_name); //click on saved list and the new article will add
+        SearchPageObject.clickCancelSearchTwice(); //go back to main page
+        NavigationUI NavigationUI = new NavigationUI(driver);
+        NavigationUI.clickMySavedLists(); //contains overlay "NOT NOW" closing (what if it won't appear next time?)
+        SearchPageObject.waitForSearchResult(name_of_folder); //assure the saving  LIST exists
+        SearchPageObject.clickByArticleWithSubstring(name_of_folder); //click on LIST by substring
+        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject.swipeArticleToDelete(article_title); //contains waiting of appear/disappear article_title
+        SearchPageObject.clickByArticleWithSubstring("Automation for Apps"); //click by article on the reading list
+        ArticlePageObject.waitForTitleElement(); //to assure the article is opened with title
+        String appium_article_title = ArticlePageObject.getArticleTitle();
+
         Assert.assertEquals(
-                "Article's attribute are different",
-                element_attribute_list,
-                element_attribute_article
+                "We see unexpected title",
+                "Automation for Apps",
+                appium_article_title
         );
     }
-    @Test
-    public void testArticleHasTitle() {
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find search input",
-                5
-        );
-        String search_value = "Java";
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[@class='android.view.ViewGroup']//*[contains(@text,'Search Wikipedia')]"),
-                search_value,
-                "Cannot send input value " + search_value,
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Object-oriented programming language']"),
-                "Cannot find the article " + search_value + " on the search list",
-                5
-        );
-        MainPageObject.assertElementPPresent(
-                By.xpath("//*[@text='Java (programming language)']"),
-                "Cannot find article title",
-                "text",
-                "Java (programming language)"
-        );
-    }
-    @Test
+
+    @Test               //EX #6 (REFACTORED)
     public void testFindArticleTitle(){
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find search input",
-                5
-        );
-        String search_value = "Java";
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[@class='android.view.ViewGroup']//*[contains(@text,'Search Wikipedia')]"),
-                search_value,
-                "Cannot send input value " + search_value,
-                5
-        );
-        MainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Object-oriented programming language']"),
-                "Cannot find the article " + search_value + " on the search list",
-                5
-        );
-       MainPageObject.assertElementPresent(
-               By.xpath("//*[@text='Java (programming language)']"),
-               "Cannot find"
-       );
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+
+        SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
+        String search_line = "Java";
+        SearchPageObject.typeSearchLine(search_line);    //instead of waitForElementAndSendKeys
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");// on the search list
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject.assertArticleHasTitleWithoutWait();
     }
 }
 
