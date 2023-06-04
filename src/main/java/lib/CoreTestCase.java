@@ -1,6 +1,7 @@
 package lib;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
 import junit.framework.TestCase;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
@@ -20,11 +21,8 @@ public class CoreTestCase extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        DesiredCapabilities capabilities = this.getCapabilitiesByPlatformEnv();
+        driver = this.getDriverByPlatformEnv();
 
-
-
-        driver = new AndroidDriver(new URL(AppiumURL), capabilities);
         this.rotateScreenPortrait();
         WebElement element = driver.findElementById("org.wikipedia:id/fragment_onboarding_skip_button");
         element.click();
@@ -71,9 +69,21 @@ public class CoreTestCase extends TestCase {
         } else {
             throw new Exception("Cannot get run platform from env variable. Platform value " + platform);
         }
-            return capabilities;
+        return capabilities;
+    }
+
+    private AppiumDriver getDriverByPlatformEnv() throws Exception {
+        String platform = System.getenv("PLATFORM");
+        DesiredCapabilities capabilities = this.getCapabilitiesByPlatformEnv();
+        if (platform.equals(PLATFORM_ANDROID)) {
+            return new AndroidDriver(new URL(AppiumURL), capabilities);
+        } else if (platform.equals(PLATFORM_IOS)) {
+            return new IOSDriver(new URL(AppiumURL), capabilities);
+        } else {
+            throw new Exception("Cannot get driver from env variable");
         }
     }
+}
 
 
 
