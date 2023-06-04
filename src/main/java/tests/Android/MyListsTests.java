@@ -1,10 +1,10 @@
-package main.java.tests.Android;
+package tests.Android;
 
-import main.java.lib.CoreTestCase;
-import main.java.lib.ui.ArticlePageObject;
-import main.java.lib.ui.MyListsPageObject;
-import main.java.lib.ui.NavigationUI;
-import main.java.lib.ui.SearchPageObject;
+import lib.CoreTestCase;
+import lib.ui.ArticlePageObject;
+import lib.ui.MyListsPageObject;
+import lib.ui.NavigationUI;
+import lib.ui.SearchPageObject;
 import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase {

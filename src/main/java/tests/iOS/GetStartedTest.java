@@ -1,7 +1,7 @@
-package main.java.tests.iOS;
+package tests.iOS;
 
-import main.java.lib.iOSTestCase;
-import main.java.lib.ui.WelcomePageObject;
+import lib.iOSTestCase;
+import lib.ui.WelcomePageObject;
 import org.junit.Test;
 
 public class GetStartedTest extends iOSTestCase {

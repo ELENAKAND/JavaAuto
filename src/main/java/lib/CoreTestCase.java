@@ -1,4 +1,4 @@
-package main.java.lib;
+package lib;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import junit.framework.TestCase;
@@ -49,8 +49,7 @@ public class CoreTestCase extends TestCase {
     }
 
     private DesiredCapabilities getCapabilitiesByPlatformEnv() throws Exception {
-           String platform = System.getenv("PLATFORM");
-            Map<String, String> platf = System.getenv();
+        String platform = System.getenv("PLATFORM");
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
 

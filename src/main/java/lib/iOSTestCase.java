@@ -1,4 +1,4 @@
-package main.java.lib;
+package lib;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.ios.IOSDriver;

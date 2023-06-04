@@ -1,8 +1,8 @@
-package main.java.tests.Android;
+package tests.Android;
 
-import main.java.lib.CoreTestCase;
-import main.java.lib.ui.ArticlePageObject;
-import main.java.lib.ui.SearchPageObject;
+import lib.CoreTestCase;
+import lib.ui.ArticlePageObject;
+import lib.ui.SearchPageObject;
 import org.junit.Test;
 
 public class ArticleTests extends CoreTestCase {
