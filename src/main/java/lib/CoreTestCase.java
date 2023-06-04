@@ -7,11 +7,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import java.net.URL;
 import java.time.Duration;
-import java.util.Map;
+
 
 public class CoreTestCase extends TestCase {
-    //private static final String PLATFORM_IOS = "ios";
-    // private static final String PLATFORM_ANDROID = "android";
+    private static final String PLATFORM_IOS = "ios";
+    private static final String PLATFORM_ANDROID = "android";
 
 
     protected AppiumDriver driver;
@@ -53,7 +53,7 @@ public class CoreTestCase extends TestCase {
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
-        if (platform.equals("android")) {
+        if (platform.equals(PLATFORM_ANDROID)) {
             capabilities.setCapability("platformName", "Android");
             capabilities.setCapability("deviceName", "AndroidTestDevice");
             capabilities.setCapability("platformVersion", "9");
@@ -61,7 +61,7 @@ public class CoreTestCase extends TestCase {
             capabilities.setCapability("appPackage", "org.wikipedia");
             capabilities.setCapability("appActivity", ".main.MainActivity");
             capabilities.setCapability("app", "/Users/elenakandaurova/Desktop/JavaAppAuto/JavaAuto/apks/org.wikipedia.apk");
-        } else if (platform.equals("ios")) {
+        } else if (platform.equals(PLATFORM_IOS)) {
             capabilities.setCapability("platformName", "iOS");
             capabilities.setCapability("deviceName", "iPhone 14 Plus Simulator");
             capabilities.setCapability("platformVersion", "16.4");

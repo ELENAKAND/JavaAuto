@@ -7,7 +7,7 @@ public class SearchPageObject extends MainPageObject {  //Created for search met
     private static final String                        //private because we will use these CONSTANTS in this file only
         SEARCH_INIT_ELEMENT = "//*[contains(@text,'Search Wikipedia')]",
         SEARCH_INPUT = "//*[@class='android.view.ViewGroup']//*[contains(@text,'Search Wikipedia')]",
-        SEARCH_CANCEL_BUTTON = "Navigate up",
+        SEARCH_CANCEL_BUTTON = "//*[@class='android.widget.ImageButton'][@content-desc='Navigate up']",
         SEARCH_CANCEL_CROSS_BUTTON = "org.wikipedia:id/search_close_btn",
         SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@text='{SUBSTRING}']",
         SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_title']",
@@ -34,20 +34,20 @@ public class SearchPageObject extends MainPageObject {  //Created for search met
         this.waitForElementPresent(By.xpath(search_result_xpath), "Cannot find search result with substring "+substring);
     }
     public void waitForCancelButtonToAppear(){
-        this.waitForElementPresent(By.id(SEARCH_CANCEL_BUTTON), "Cannot find search cancel button", 5);
+        this.waitForElementPresent(By.xpath(SEARCH_CANCEL_BUTTON), "Cannot find search cancel button", 5);
     }
     public void waitForCancelButtonToDisappear(){
-        this.waitForElementNotPresent(By.id(SEARCH_CANCEL_BUTTON), "Search cancel button still present", 5);
+        this.waitForElementNotPresent(By.xpath(SEARCH_CANCEL_BUTTON), "Search cancel button still present", 5);
     }
     public void waitForSearchListIsEmpty(){
         this.waitForElementNotPresent(By.xpath(SEARCH_RESULT_ELEMENT), "Search results still here", 5);
     }
     public void clickCancelSearch(){
-        this.waitForElementAndClick(By.id(SEARCH_CANCEL_BUTTON), "Cannot find and click search cancel button", 5);
+        this.waitForElementAndClick(By.xpath(SEARCH_CANCEL_BUTTON), "Cannot find and click search cancel button", 5);
     }
     public void clickCancelSearchTwice(){
-        this.waitForElementAndClick(By.id(SEARCH_CANCEL_BUTTON), "Cannot find and click search cancel button", 5);
-        this.waitForElementAndClick(By.id(SEARCH_CANCEL_BUTTON), "Cannot find and click search cancel button", 5);
+        this.waitForElementAndClick(By.xpath(SEARCH_CANCEL_BUTTON), "Cannot find and click search cancel button", 5);
+        this.waitForElementAndClick(By.xpath(SEARCH_CANCEL_BUTTON), "Cannot find and click search cancel button", 5);
     }
     public void clickCrossCancelButton(){
         this.waitForElementAndClick(By.id(SEARCH_CANCEL_CROSS_BUTTON), "Cannot find and click x cancel button", 5);

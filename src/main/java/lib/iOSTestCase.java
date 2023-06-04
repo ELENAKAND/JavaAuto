@@ -20,7 +20,7 @@ public class iOSTestCase extends TestCase {
         capabilities.setCapability("deviceName", "iPhone 14 Plus Simulator");
         capabilities.setCapability("platformVersion", "16.4");
         capabilities.setCapability("udid", "F0F248BE-F535-4BC8-8191-F36AFA7247EC");
-        capabilities.setCapability("app", "/Users/elenakandaurova/Desktop/JavaAppAuto/JavaAuto/apks/Wikipedia693.app");
+        capabilities.setCapability("app", "/Users/elenakandaurova/Desktop/JavaAppAuto/JavaAuto/apks/Wikipedia.app");
         capabilities.setCapability("automationName", "XCUITest");
 
         driver = new IOSDriver(new URL(AppiumURL), capabilities);
