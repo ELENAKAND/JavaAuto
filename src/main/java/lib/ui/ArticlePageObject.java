@@ -6,14 +6,14 @@ import org.openqa.selenium.WebElement;
 
 public class ArticlePageObject extends MainPageObject {
     private static final String
-    TITLE = "pcs-edit-section-title-description",
-    FOOTER_ELEMENT = "//*[@text='View article in browser']",
-    SAVE_BUTTON = "//*[@text='WORA']",
-    SAVE_BUTTON_SECOND_SAVING = "//*[@text='Node.js']",
-    ADD_TO_LIST = "org.wikipedia:id/snackbar_action",
-    MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
-    MY_LIST_OK_BUTTON = "android:id/button1",
-    GO_BACK_ARROW_BUTTON = "Navigate up";
+    TITLE = "id:pcs-edit-section-title-description",
+    FOOTER_ELEMENT = "xpath://*[@text='View article in browser']",
+    SAVE_BUTTON = "xpath://*[@text='WORA']",
+    SAVE_BUTTON_SECOND_SAVING = "xpath://*[@text='Node.js']",
+    ADD_TO_LIST = "id:org.wikipedia:id/snackbar_action",
+    MY_LIST_NAME_INPUT = "id:org.wikipedia:id/text_input",
+    MY_LIST_OK_BUTTON = "id:android:id/button1",
+    GO_BACK_ARROW_BUTTON = "xpath://*[@class='android.widget.ImageButton'][@content-desc='Navigate up']";
 
 
 
@@ -21,7 +21,7 @@ public class ArticlePageObject extends MainPageObject {
         super(driver);
     }
     public WebElement waitForTitleElement(){
-        return this.waitForElementPresent(By.id(TITLE), "Cannot find article title on page", 15);
+        return this.waitForElementPresent(TITLE, "Cannot find article title on page", 15);
     }
     public String getArticleTitle(){
         WebElement title_element = waitForTitleElement();
@@ -29,7 +29,7 @@ public class ArticlePageObject extends MainPageObject {
     }
     public void swipeToFooter(){
         this.swipeUpToFindElement(
-                By.xpath(FOOTER_ELEMENT),
+                FOOTER_ELEMENT,
                 "Cannot find the end of article",
                 20
         );
@@ -37,53 +37,49 @@ public class ArticlePageObject extends MainPageObject {
 
     public void addArticleToMyList(String folder_name){
         this.waitForElementAndClick(
-                By.xpath(SAVE_BUTTON),
+                SAVE_BUTTON,
                 "Cannot find SAVE button",
                 5
         );
         this.waitForElementAndClick(
-                By.id(ADD_TO_LIST),
+                ADD_TO_LIST,
                 "Cannot find ADD TO LIST button",
                 5
         );
         this.waitForElementAndClick(
-                By.id(MY_LIST_NAME_INPUT),
+                MY_LIST_NAME_INPUT,
                 "Cannot find NAME OF LIST input field",
                 5
         );
         this.waitForElementAndSendKeys(
-                By.id(MY_LIST_NAME_INPUT),
+                MY_LIST_NAME_INPUT,
                 folder_name,
                 "Cannot send input to the name of list",
                 5
         );
         this.waitForElementAndClick(
-                By.id(MY_LIST_OK_BUTTON),
+                MY_LIST_OK_BUTTON,
                 "Cannot find OK button",
                 5
         );
     }
     public void addAnotherArticleToMyList(){
         this.waitForElementAndClick(
-                By.xpath(SAVE_BUTTON_SECOND_SAVING),
+                SAVE_BUTTON_SECOND_SAVING,
                 "Cannot find second-save button ",
                 5
         );
         this.waitForElementAndClick(
-                By.id(ADD_TO_LIST),
+                ADD_TO_LIST,
                 "Cannot find ADD TO LIST button",
                 5
         );
     }
     public void closeArticle(){            //click arrow-button to go back
         this.waitForElementAndClick(
-                By.id(GO_BACK_ARROW_BUTTON),
+                GO_BACK_ARROW_BUTTON,
                 "Cannot find arrow-button to go back after saving list",
                 5
         );
-    }
-    public void assertArticleHasTitleWithoutWait(){
-        this.findArticleWithoutWait(By.xpath(TITLE));
-        this.assertElementPresentWithoutWait(By.xpath(TITLE), "Cannot find any title");
     }
 }

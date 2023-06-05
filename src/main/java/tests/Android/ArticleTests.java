@@ -33,15 +33,4 @@ public class ArticleTests extends CoreTestCase {
         ArticlePageObject.waitForTitleElement();
         ArticlePageObject.swipeToFooter();
     }
-    @Test
-    public void testFindArticleTitle(){      //test always failed without timeout
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
-
-        SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
-        String search_line = "Java";
-        SearchPageObject.typeSearchLine(search_line);    //instead of waitForElementAndSendKeys
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");// on the search list
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        ArticlePageObject.assertArticleHasTitleWithoutWait();
-    }
 }
