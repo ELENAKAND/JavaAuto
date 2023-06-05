@@ -57,22 +57,6 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
         SearchPageObject.typeSearchLine("Java");    //instead of waitForElementAndSendKeys
         SearchPageObject.waitForSearchResult("Java");
-        /*
-        MainPageObject.assertListTitlesHaveText(
-                By.xpath("//*[@text='Java']"),
-                "Cannot find text Java",
-                "Java"
-        );
-        MainPageObject.assertListTitlesHaveText(
-                By.xpath("//*[@text='JavaScript']"),
-                "Cannot find text Java",
-                "Java"
-        );
-        MainPageObject.assertListTitlesHaveText(
-                By.xpath("//*[@text='Java (programming language)']"),
-                "Cannot find text Java",
-                "Java"
-        );*/
     }
 
 
