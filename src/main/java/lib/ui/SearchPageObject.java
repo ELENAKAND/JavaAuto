@@ -3,20 +3,20 @@ import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 
 
-public class SearchPageObject extends MainPageObject {  //Created for search methods
-    private static final String                        //private because we will use these CONSTANTS in this file only
-        SEARCH_INIT_ELEMENT = "xpath://*[contains(@text,'Search Wikipedia')]",
-        SEARCH_INPUT = "xpath://*[@class='android.view.ViewGroup']//*[contains(@text,'Search Wikipedia')]",
-        SEARCH_CANCEL_BUTTON = "xpath://*[@class='android.widget.ImageButton'][@content-desc='Navigate up']",
-        SEARCH_CANCEL_CROSS_BUTTON = "id:org.wikipedia:id/search_close_btn",
-        SEARCH_RESULT_BY_SUBSTRING_TPL = "xpath://*[@text='{SUBSTRING}']",
-        SEARCH_RESULT_ELEMENT = "xpath://*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_title']",
-        SEARCH_EMPTY_RESULT_ELEMENT = "xpath://*[@text='No results']";
+     abstract public class SearchPageObject extends MainPageObject {  //abstract class because we won't create no more instances from this class
+     protected static  String       //remove <final> to change CONSTANTS from other classes
+        SEARCH_INIT_ELEMENT,
+        SEARCH_INPUT,
+        SEARCH_CANCEL_BUTTON,
+        SEARCH_CANCEL_CROSS_BUTTON,
+        SEARCH_RESULT_BY_SUBSTRING_TPL,
+        SEARCH_RESULT_ELEMENT,
+        SEARCH_EMPTY_RESULT_ELEMENT;
     public static Object waitFor;
 
     public SearchPageObject(AppiumDriver driver){      //Driver initialization from MainPageObject
         super(driver);
-    }
+    } //invoke the superclass constructor
     /*TEMPLATE METHODS:*/
     private static String getResultSearchElement(String substring){   //Method won't interact with driver, just convert strings, so we can not to use driver and make method static
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);

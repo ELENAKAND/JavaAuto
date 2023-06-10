@@ -5,12 +5,13 @@ import org.openqa.selenium.By;
 
 public class WelcomePageObject extends MainPageObject {
     private static final String
-    STEP_MAIN_PAGE = "id:The free encyclopedia",
-    STEP_NEW_WAYS_TO_EXPLORE = "id:New ways to explore",
-    STEP_SEARCH_IN_LANG = "id:Search in nearly 300 languages",
-    STEP_MAKE_APP_BETTER = "id:Help make the app better",
-    STEP_NEXT_BUTTON = "xpath://*[@name='Next']",
-    STEP_GET_STARTED_BUTTON = "xpath://*[@name='Get started']";
+    STEP_MAIN_PAGE = "xpath://XCUIElementTypeButton[@name='Learn more about Wikipedia']",
+    STEP_NEW_WAYS_TO_EXPLORE = "xpath://XCUIElementTypeStaticText[@name='New ways to explore']",
+    STEP_SEARCH_IN_LANG = "xpath://XCUIElementTypeStaticText[@name='Search in over 300 languages']",
+    STEP_MAKE_APP_BETTER = "xpath://XCUIElementTypeStaticText[@name='Learn more about data collected']",
+    STEP_NEXT_BUTTON = "xpath://XCUIElementTypeButton[@name='Next']",
+    STEP_GET_STARTED_BUTTON = "xpath://XCUIElementTypeStaticText[@name='Get started']",
+    SKIP = "xpath://XCUIElementTypeButton[@name='Skip']";
 
     public WelcomePageObject(AppiumDriver driver) {
         super(driver);
@@ -33,5 +34,8 @@ public class WelcomePageObject extends MainPageObject {
     }
     public void clickGetStartedButton() {
         this.waitForElementAndClick(STEP_GET_STARTED_BUTTON, "Cannot find and click the Get started button", 10);
+    }
+    public void clickSkip(){
+        this.waitForElementAndClick(SKIP, "Cannot find skip button", 5);
     }
 }

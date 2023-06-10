@@ -2,26 +2,27 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class SearchTests extends CoreTestCase {
     @Test
     public void testSearch() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
         SearchPageObject.typeSearchLine("Java");    //instead of waitForElementAndSendKeys
         SearchPageObject.waitForSearchResult("Object-oriented programming language"); //instead of waitForElementPresent
     }
     @Test
     public void testCancelSearch() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick for search line
         SearchPageObject.clickCancelSearch();             //go back to the main page
     }
 
     @Test
     public void testClearSearchAndReturn() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
         SearchPageObject.typeSearchLine("Java");    //instead of waitForElementAndSendKeys
         SearchPageObject.waitForCancelButtonToAppear();
@@ -30,13 +31,13 @@ public class SearchTests extends CoreTestCase {
     }
     @Test
     public void testElementHasText() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
         SearchPageObject.waitForSearchResult("Search Wikipedia");
     }
     @Test            //EX #3 (REFACTORED)
     public void testGetSearchResultsAndCancel() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
         String search_line = "Java";
         SearchPageObject.typeSearchLine(search_line);    //instead of waitForElementAndSendKeys
@@ -50,7 +51,7 @@ public class SearchTests extends CoreTestCase {
     }
     @Test
     public void testSearchByWord() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
         SearchPageObject.typeSearchLine("Java");    //instead of waitForElementAndSendKeys
         SearchPageObject.waitForSearchResult("Java");
@@ -59,7 +60,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testAmountOfNotEmptySearch() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick for search line
         String search_line = "Linkin Park discography";
         SearchPageObject.typeSearchLine(search_line);         //instead of waitForElementAndSendKeys
@@ -72,7 +73,7 @@ public class SearchTests extends CoreTestCase {
     }
     @Test
     public void testAmountOfEmptySearch() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick for search line
         String search_line = "whdfjgkxkan";
         SearchPageObject.typeSearchLine(search_line);          //instead of waitForElementAndSendKeys

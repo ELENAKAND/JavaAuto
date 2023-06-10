@@ -5,18 +5,20 @@ import lib.ui.ArticlePageObject;
 import lib.ui.MyListsPageObject;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase {
     @Test
     public void testSaveTwoArticlesAndDeleteOne() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
         String search_line = "Java";
         SearchPageObject.typeSearchLine(search_line);    //instead of waitForElementAndSendKeys
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");// on the search list
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement(); //to assure the article is opened
         String article_title = ArticlePageObject.getArticleTitle(); //?
         String name_of_folder = "Test list";
@@ -50,12 +52,12 @@ public class MyListsTests extends CoreTestCase {
     }
     @Test
     public void testSaveFirstArticleToMyList() {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick for search line
         SearchPageObject.typeSearchLine("Java");    //instead of waitForElementAndSendKeys
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language"); //instead of waitForElementAndClick for search result
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
         String article_title = ArticlePageObject.getArticleTitle();
         String name_of_folder = "Test list";

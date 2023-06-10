@@ -102,6 +102,21 @@ public class MainPageObject {         //created for tests methods
             ++already_swiped;
         }
     }
+    public void swipeUpTillElementAppear(String locator, String error_message, int max_swipes){
+        int already_swiped = 0;
+        while (!this.isElementLocatedOnTheScreen(locator)){
+            if (already_swiped > max_swipes){
+                Assert.assertTrue(error_message, this.isElementLocatedOnTheScreen(locator));//exit the loop
+            }
+            swipeUpQuick();
+            ++already_swiped;  //continue the loop
+        }
+    }
+    public boolean isElementLocatedOnTheScreen(String locator){
+        int element_location_by_y = this.waitForElementPresent(locator, "Cannot find element by locator", 1).getLocation().getY();
+        int screen_size_by_y = driver.manage().window().getSize().getHeight();//get the length of the entire screen
+        return element_location_by_y < screen_size_by_y;//while 1st>2nd by height->return false and continue swiping, when element has found->return true;
+    }
     public void swipeElementToLeft(String locator, String error_message){
         WebElement element = waitForElementPresent(
                 locator,
@@ -137,8 +152,8 @@ public class MainPageObject {         //created for tests methods
     }
     private By getLocatorByString(String locator_with_type){
         String[] exploded_locator = locator_with_type.split(Pattern.quote(":"),2);
-        String by_type = exploded_locator[1];
-        String locator = exploded_locator[2];
+        String by_type = exploded_locator[0];
+        String locator = exploded_locator[1];
         if (by_type.equals("xpath")){
             return By.xpath(locator);
         } else if (by_type.equals("id")){
