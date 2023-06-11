@@ -1,15 +1,19 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.MyListsPageObject;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
 import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.MyListsPageObjectFactory;
+import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase {
+    private static final String name_of_folder = "Test list";
     @Test
     public void testSaveTwoArticlesAndDeleteOne() {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
@@ -21,7 +25,7 @@ public class MyListsTests extends CoreTestCase {
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement(); //to assure the article is opened
         String article_title = ArticlePageObject.getArticleTitle(); //?
-        String name_of_folder = "Test list";
+
         ArticlePageObject.addArticleToMyList(name_of_folder);//goes until OK button
         SearchPageObject.clickCancelSearchTwice(); //go back to main page
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
@@ -30,15 +34,15 @@ public class MyListsTests extends CoreTestCase {
         SearchPageObject.clickByArticleWithSubstring("Automation for Apps");// on the search list
         ArticlePageObject.waitForTitleElement(); //to assure the article is opened
         ArticlePageObject.addAnotherArticleToMyList(); //goes until ADD TO LIST
-        MyListsPageObject MylistsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject MylistsPageObject = MyListsPageObjectFactory.get(driver);
         String saved_folder_name = "Test list";
         MylistsPageObject.openSavedFolderByName(saved_folder_name); //click on saved list and the new article will add
         SearchPageObject.clickCancelSearchTwice(); //go back to main page
-        NavigationUI NavigationUI = new NavigationUI(driver);
+        NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMySavedLists(); //contains overlay "NOT NOW" closing (what if it won't appear next time?)
         SearchPageObject.waitForSearchResult(name_of_folder); //assure the saving  LIST exists
         SearchPageObject.clickByArticleWithSubstring(name_of_folder); //click on LIST by substring
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
         MyListsPageObject.swipeArticleToDelete(article_title); //contains waiting of appear/disappear article_title
         SearchPageObject.clickByArticleWithSubstring("Automation for Apps"); //click by article on the reading list
         ArticlePageObject.waitForTitleElement(); //to assure the article is opened with title
@@ -57,18 +61,26 @@ public class MyListsTests extends CoreTestCase {
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick for search line
         SearchPageObject.typeSearchLine("Java");    //instead of waitForElementAndSendKeys
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language"); //instead of waitForElementAndClick for search result
+
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
         String article_title = ArticlePageObject.getArticleTitle();
-        String name_of_folder = "Test list";
-        ArticlePageObject.addArticleToMyList(name_of_folder);
-        ArticlePageObject.closeArticle(); //1st arrow-button to go back
-        ArticlePageObject.closeArticle(); //2nd arrow-button to go back one more time (to main page)
-        NavigationUI NavigationUI = new NavigationUI(driver);
-        NavigationUI.clickMySavedLists(); //contains overlay "NOT NOW" closing (what if it won't appear next time?)
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
-        MyListsPageObject.openSavedFolderByName(name_of_folder);
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToMyList(name_of_folder);//save to the list for Android
+        } else {
+            ArticlePageObject.addArticlesToMySaved(name_of_folder);//save to the list for iOS
+        }
+        if (Platform.getInstance().isAndroid()) {
+            ArticlePageObject.closeArticle(); //1st arrow-button to go back on android
+            ArticlePageObject.closeArticle(); //2nd arrow-button to go back one more time (to main page) on android
+        } else {
+            ArticlePageObject.closeIOSArticle(); //return to the main page
+        }
+        NavigationUI NavigationUI = NavigationUIFactory.get(driver);
+        NavigationUI.clickMySavedLists(); //contains closing overlay
+
+        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
+        MyListsPageObject.openSavedFolderByName(name_of_folder);//name of folder is the name of saved list
         MyListsPageObject.swipeArticleToDelete(article_title); //contains waiting of appear/disappear article_title
     }
-
 }

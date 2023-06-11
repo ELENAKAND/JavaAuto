@@ -11,7 +11,8 @@ import org.openqa.selenium.By;
         SEARCH_CANCEL_CROSS_BUTTON,
         SEARCH_RESULT_BY_SUBSTRING_TPL,
         SEARCH_RESULT_ELEMENT,
-        SEARCH_EMPTY_RESULT_ELEMENT;
+        SEARCH_EMPTY_RESULT_ELEMENT,
+        GO_BACK_ARROW_BUTTON;
     public static Object waitFor;
 
     public SearchPageObject(AppiumDriver driver){      //Driver initialization from MainPageObject

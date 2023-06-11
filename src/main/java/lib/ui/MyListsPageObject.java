@@ -1,13 +1,16 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 import org.openqa.selenium.By;
 
 
-public class MyListsPageObject extends MainPageObject{
-    public static final String
-            FOLDER_BY_NAME_TPL = "//*[@text='{FOLDER_NAME}']", // {section easy to change} by .replace() method
-            ARTICLE_BY_TITLE_TPL = "//*[@text='{TITLE}']";
+abstract public class MyListsPageObject extends MainPageObject{
+    protected static  String
+            FOLDER_BY_NAME_TPL,
+            ARTICLE_BY_TITLE_TPL,
+            READING_LIST_BUTTON,
+            TRASH_BUTTON;
     private static String getFolderXpathByName(String name_of_folder){
         return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}", name_of_folder);
     }
@@ -18,6 +21,9 @@ public class MyListsPageObject extends MainPageObject{
         super(driver);
     }
     public void openSavedFolderByName(String name_of_folder){
+        if (Platform.getInstance().isIOS()){
+            this.waitForElementAndClick(READING_LIST_BUTTON, "Cannot find reading list button", 5);
+        }
         String folder_name_xpath = getFolderXpathByName(name_of_folder);
         this.waitForElementAndClick(
                 folder_name_xpath,
@@ -48,6 +54,9 @@ public class MyListsPageObject extends MainPageObject{
                 article_xpath,
                 "Cannot find saved article"
         );
+        if (Platform.getInstance().isIOS()){
+            this.clickElementToTheRightUpperCorner(article_xpath, "Cannot find saved article");
+        }
         this.waitForArticleToDisappearByTitle(article_title);
     }
 }

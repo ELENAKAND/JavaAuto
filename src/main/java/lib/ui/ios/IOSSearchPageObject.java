@@ -11,6 +11,7 @@ public class IOSSearchPageObject extends SearchPageObject {
         SEARCH_RESULT_BY_SUBSTRING_TPL = "xpath://XCUIElementTypeStaticText[@name='{SUBSTRING}']";// or [contains(@name,'{SUBSTRING}')];
         SEARCH_RESULT_ELEMENT = "xpath://XCUIElementTypeStaticText";
         SEARCH_EMPTY_RESULT_ELEMENT = "xpath://XCUIElementTypeStaticText[@name='No results found']";
+        GO_BACK_ARROW_BUTTON = "xpath://XCUIElementTypeButton[@name='Back']";
     }
     public IOSSearchPageObject(AppiumDriver driver){
         super(driver);
