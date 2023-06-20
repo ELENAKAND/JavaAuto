@@ -2,13 +2,12 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
-import io.appium.java_client.touch.TapOptions;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
+import lib.Platform;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-//import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -16,9 +15,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 import java.util.regex.Pattern;
-import lib.Platform;
-
-import static org.openqa.selenium.Platform.*;
 
 public class MainPageObject {         //created for tests methods
     protected AppiumDriver driver;   //driver initialization
@@ -34,13 +30,21 @@ public class MainPageObject {         //created for tests methods
                 ExpectedConditions.presenceOfElementLocated(by)
         );
     }
+    public WebElement waitForElementClickable(String locator, String error_message, long timeoutInSeconds) {
+        By by = this.getLocatorByString(locator);
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(error_message + "\n");
+        return wait.until(
+                ExpectedConditions.elementToBeClickable(by)
+        );
+    }
 
     public WebElement waitForElementPresent(String locator, String error_message) {
         return waitForElementPresent(locator, error_message, 5);
     }
 
     public WebElement waitForElementAndClick(String locator, String error_message, long timeoutInSeconds) {
-        WebElement element = waitForElementPresent(locator, error_message, timeoutInSeconds);
+        WebElement element = waitForElementClickable(locator, error_message, timeoutInSeconds);
         element.click();
         return element;
     }
@@ -135,23 +139,24 @@ public class MainPageObject {         //created for tests methods
         action.tap(PointOption.point(point_to_click_x, point_to_click_y)).perform();
     }
     public void swipeElementToLeft(String locator, String error_message){
-        WebElement element = waitForElementPresent(
+        WebElement element = waitForElementClickable(
                 locator,
                 error_message,
                 10);
         int left_x = element.getLocation().getX(); //find left element edge  on X
         int right_x = left_x + element.getSize().getWidth();//add width of element and get right edge
+        int middle_x = (left_x + right_x)/2;
         int upper_y = element.getLocation().getY();
         int lower_y = upper_y + element.getSize().getHeight();
         int middle_y = (upper_y + lower_y) / 2;
         TouchAction action = new TouchAction(driver);
-        action.press(PointOption.point(right_x, middle_y));
+        action.press(PointOption.point(middle_x, middle_y));
         action.waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)));
                 if (Platform.getInstance().isAndroid()){
-                    action.moveTo(PointOption.point(left_x, middle_y));
+                    action.moveTo(PointOption.point(0, middle_y));
                 }else {
                     int offset_x = (-1 * element.getSize().getWidth());//to the left by the entire width of the element
-                    action.moveTo(PointOption.point(offset_x, 0));
+                    action.moveTo(PointOption.point(0, middle_y));
                 }
 
         action.release();

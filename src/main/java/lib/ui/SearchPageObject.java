@@ -1,6 +1,6 @@
 package lib.ui;
+
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 
 
      abstract public class SearchPageObject extends MainPageObject {  //abstract class because we won't create no more instances from this class
@@ -12,14 +12,15 @@ import org.openqa.selenium.By;
         SEARCH_RESULT_BY_SUBSTRING_TPL,
         SEARCH_RESULT_ELEMENT,
         SEARCH_EMPTY_RESULT_ELEMENT,
-        GO_BACK_ARROW_BUTTON;
+        GO_BACK_ARROW_BUTTON,
+        CLEAR_TEXT;
     public static Object waitFor;
 
     public SearchPageObject(AppiumDriver driver){      //Driver initialization from MainPageObject
         super(driver);
     } //invoke the superclass constructor
     /*TEMPLATE METHODS:*/
-    private static String getResultSearchElement(String substring){   //Method won't interact with driver, just convert strings, so we can not to use driver and make method static
+    public static String getResultSearchElement(String substring){   //Method won't interact with driver, just convert strings, so we can not to use driver and make method static
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
         }
     /**/
@@ -51,7 +52,7 @@ import org.openqa.selenium.By;
         this.waitForElementAndClick(SEARCH_CANCEL_BUTTON, "Cannot find and click search cancel button", 5);
     }
     public void clickCrossCancelButton(){
-        this.waitForElementAndClick(SEARCH_CANCEL_CROSS_BUTTON, "Cannot find and click x cancel button", 5);
+        this.waitForElementAndClick(SEARCH_CANCEL_BUTTON, "Cannot find and click x cancel button", 5);
     }
     public void clickByArticleWithSubstring(String substring){
         String search_result_xpath = getResultSearchElement(substring);
@@ -77,5 +78,8 @@ import org.openqa.selenium.By;
                 SEARCH_RESULT_ELEMENT,
                 "We supposed not to find any results"
         );
+    }
+    public void clearSearchField(){
+        this.waitForElementAndClick(CLEAR_TEXT, "Cannot find x button", 5);
     }
 }

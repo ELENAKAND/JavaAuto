@@ -1,6 +1,7 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.SearchPageObject;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
@@ -13,6 +14,7 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject.typeSearchLine("Java");    //instead of waitForElementAndSendKeys
         SearchPageObject.waitForSearchResult("Object-oriented programming language"); //instead of waitForElementPresent
     }
+
     @Test
     public void testCancelSearch() {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
@@ -29,13 +31,15 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject.clickCancelSearch();
         SearchPageObject.waitForCancelButtonToDisappear();
     }
+
     @Test
     public void testElementHasText() {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
         SearchPageObject.waitForSearchResult("Search Wikipedia");
     }
-    @Test            //EX #3 (REFACTORED)
+
+    @Test
     public void testGetSearchResultsAndCancel() {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();                    //instead of waitForElementAndClick
@@ -46,9 +50,10 @@ public class SearchTests extends CoreTestCase {
                 "We found no results",
                 amount_of_search_results > 0
         );
-        SearchPageObject.clickCrossCancelButton();
+        SearchPageObject.clearSearchField();
         SearchPageObject.waitForSearchListIsEmpty();
     }
+
     @Test
     public void testSearchByWord() {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
@@ -71,6 +76,7 @@ public class SearchTests extends CoreTestCase {
                 amount_of_search_results > 0
         );
     }
+
     @Test
     public void testAmountOfEmptySearch() {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
@@ -78,7 +84,11 @@ public class SearchTests extends CoreTestCase {
         String search_line = "whdfjgkxkan";
         SearchPageObject.typeSearchLine(search_line);          //instead of waitForElementAndSendKeys
         SearchPageObject.waitForEmptyResultsLabel();
-        SearchPageObject.assertThereIsNoResultOfSearch();
+        if (Platform.getInstance().isIOS()) {
+            return; //can't define specific locator for iOS
+        } else {
+            SearchPageObject.assertThereIsNoResultOfSearch();
+        }
     }
 }
 

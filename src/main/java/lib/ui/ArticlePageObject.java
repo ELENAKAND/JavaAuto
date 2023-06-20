@@ -4,6 +4,8 @@ import io.appium.java_client.AppiumDriver;
 import lib.Platform;
 import org.openqa.selenium.WebElement;
 
+import static lib.ui.SearchPageObject.SEARCH_RESULT_BY_SUBSTRING_TPL;
+
 abstract public class ArticlePageObject extends MainPageObject {
     protected static String
             TITLE,
@@ -12,11 +14,13 @@ abstract public class ArticlePageObject extends MainPageObject {
             CREATE_NEW_LIST_BUTTON,
             SAVE_BUTTON_SECOND_SAVING,
             ADD_TO_LIST,
+            ADD_APPIUM_TO_LIST,
+            SECOND_ADD_TO_LIST,
             MY_LIST_NAME_INPUT,
             MY_LIST_OK_BUTTON,
             GO_BACK_ARROW_BUTTON,
-            SEARCH_CANCEL_BUTTON,
-            NO_THANKS_OVERLAY_BUTTON_ANDROID;
+            GO_BACK_IOS_BUTTON,
+            SEARCH_CANCEL_BUTTON;
 
     public ArticlePageObject(AppiumDriver driver) {      //driver initialization
         super(driver);
@@ -24,6 +28,9 @@ abstract public class ArticlePageObject extends MainPageObject {
 
     public WebElement waitForTitleElement(){
         return this.waitForElementPresent(TITLE, "Cannot find article title on page", 15);
+    }
+    public WebElement waitForArticle (String substring, String error_message){
+        return this.waitForElementPresent(this.getElementBySubstring(substring), "Cannot find article", 5);
     }
 
     public String getArticleTitle() {
@@ -34,6 +41,9 @@ abstract public class ArticlePageObject extends MainPageObject {
             return title_element.getAttribute("name");
 
         }
+    }
+    public String getElementBySubstring(String substring){
+        return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
     }
     public void swipeToFooter(){
         if (Platform.getInstance().isAndroid()){
@@ -81,12 +91,16 @@ abstract public class ArticlePageObject extends MainPageObject {
         }
         public void addArticlesToMySaved(String folder_name){
             this.waitForElementAndClick(SAVE_BUTTON, "Cannot find option to add article to reading list",5);
+            this.waitForElementAndClick(ADD_TO_LIST, "Cannot find ADD TO LIST option", 5);
             this.waitForElementAndClick(CREATE_NEW_LIST_BUTTON, "Cannot find Create new list",5);
             this.waitForElementAndClick(MY_LIST_NAME_INPUT, "Cannot find Create new list",5);
             this.waitForElementAndSendKeys(MY_LIST_NAME_INPUT, folder_name, "Cannot send input to the name of list", 5);
             this.waitForElementAndClick(MY_LIST_OK_BUTTON, "Cannot find Create new list",5);
         }
-
+        public void addAnotherArticleToMySaved (String folder_name) {
+            this.waitForElementAndClick(SAVE_BUTTON, "Cannot find option to add article to reading list", 5);
+            this.waitForElementAndClick(ADD_APPIUM_TO_LIST, "Cannot find ADD TO LIST option", 5);
+        }
         public void addAnotherArticleToMyList(){
             this.waitForElementAndClick(
                     SAVE_BUTTON_SECOND_SAVING,
@@ -100,6 +114,11 @@ abstract public class ArticlePageObject extends MainPageObject {
             );
         }
         public void closeArticle(){            //click arrow-button to go back
+//            try {
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
             this.waitForElementAndClick(
                     GO_BACK_ARROW_BUTTON,
                     "Cannot find arrow-button to go back after saving list",
@@ -108,7 +127,7 @@ abstract public class ArticlePageObject extends MainPageObject {
         }
         public void closeIOSArticle(){
             this. waitForElementAndClick(
-                    GO_BACK_ARROW_BUTTON,
+                    GO_BACK_IOS_BUTTON,
                     "Cannot find arrow-button to go back after saving list",
                     5
             );
@@ -118,6 +137,4 @@ abstract public class ArticlePageObject extends MainPageObject {
                     5
             );
         }
-
-
 }

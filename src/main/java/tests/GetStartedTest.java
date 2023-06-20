@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class GetStartedTest extends CoreTestCase {
     @Test
-    public void testPassThroughWelcome(){
+    public void testPassThroughWelcome(){     //always failed over the skipWelcomePageForIOSApp in CoreTestCase
         if (Platform.getInstance().isAndroid()) {
             return;
         }
